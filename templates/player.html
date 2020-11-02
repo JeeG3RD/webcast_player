@@ -1,0 +1,89 @@
+<h2>{{file}}</h2>
+
+{% for key, file in files %}
+<h3 id="title_{{file['id']}}" hidden>{{file["video"]}}</h3>
+<input type="hidden" id="idVid_{{key}}" value="{{file['id']}}">
+<input type="hidden" id="srcVid_{{key}}" value="../storage/videos/{{file['video']}}">
+{% endfor %}
+
+<video id="video" width="720" src="../storage/videos/{{files[0]['video']}}"  preload="auto" controls dden></video>
+
+<button onclick="test()">test</button>
+<input type="hidden" id="videosCount" value="{{files|length}}">
+<input type="hidden" id="actualVideoId" value="0">
+<br>
+<button onclick="changeFile('prev', false)">Precedent</button>
+<button id="btn" onclick="startPlay()">play</button>
+<button onclick="changeFile('next', false)">Suivant</button>
+
+<script>
+    let intervalVid = null;
+
+    $(document).ready(() => {
+        actualVid = $("#actualVideoId").val();
+        idVideo = $("#idVid_"+actualVid).val();
+
+        $("#"+idVideo).attr("hidden", false);
+        $("#title_"+idVideo).attr("hidden", false);
+    });
+
+    function startPlay() {
+        var actualVid = $("#actualVideoId").val();
+        idVid = $("#idVid_"+actualVid).val();
+
+        console.log(actualVid);
+        console.log(idVid);
+
+        document.getElementById("video").play();
+        document.getElementById("video").requestFullscreen();
+
+
+        intervalVid = setInterval(() => {checkVideoTime()}, 1000);
+    }
+
+    function changeFile(action, autoplay)
+    {
+        var nbVid = $("#videosCount").val();
+        var actualVid = $("#actualVideoId").val();
+        switch (action) {
+            case 'prev':
+                if (actualVid > 0) {
+                    actualVid--;
+                } else if (actualVid <= 0) {
+                    actualVid = nbVid-1;
+                }
+                break;
+            
+            case "next":
+                if (actualVid < nbVid-1) {
+                    actualVid++
+                } else if (actualVid >= nbVid-1) {
+                    actualVid = 0;
+                }
+        }
+
+        $("#actualVideoId").val(actualVid);
+        idVid = $("#idVid_"+actualVid).val();
+
+        $("h3").attr("hidden", true);
+        $("#title_"+actualVid).attr("hidden", false);
+        srcVid = $("#srcVid_"+actualVid).val();
+        console.log(srcVid);
+        document.getElementById("video").src = srcVid;
+
+        if (autoplay == true) {
+            document.getElementById("video").play();
+            intervalVid = setInterval(() => {checkVideoTime()}, 1000);
+        }
+    }
+
+    function checkVideoTime() {
+        videoLength = document.getElementById("video").duration * 1000;
+        videoTime = document.getElementById("video").currentTime * 1000;
+
+        if (videoTime >= videoLength) {
+            clearInterval(intervalVid);
+            changeFile('next', true);
+        }
+    }
+</script>

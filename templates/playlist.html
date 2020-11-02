@@ -1,0 +1,28 @@
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <form action="playlist.php" method="POST">
+                <div class="card-header">
+                    <h2>Sélection des fichiers</h2>
+                </div>
+                
+                <div class="card-body">
+                    {% for file in files %}
+                    <div class="form-group">
+                        <input type="checkbox" id="check_{{file}}" name="playlistFile[]" value="{{file}}">
+                        
+                        <label for="check_{{file}}">{{file}}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="card-footer">
+                    <button type="submit"
+                    class="btn btn-success">
+                        Valider
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
