@@ -1,20 +1,39 @@
-<h2>{{file}}</h2>
+<div id="hidden-inputs">
+    <input type="hidden" id="videosCount" value="{{files|length}}">
+    <input type="hidden" id="actualVideoId" value="0">
+</div>
 
-{% for key, file in files %}
-<h3 id="title_{{file['id']}}" hidden>{{file["video"]}}</h3>
-<input type="hidden" id="idVid_{{key}}" value="{{file['id']}}">
-<input type="hidden" id="srcVid_{{key}}" value="../storage/videos/{{file['video']}}">
-{% endfor %}
+<div class="row jusitfy-content">
+    <div class="col-md-12 text-center">
+        {% for key, file in files %}
+        <h3 id="title_{{file['id']}}" hidden>{{file["video"]}}</h3>
+        <input type="hidden" id="idVid_{{key}}" value="{{file['id']}}">
+        <input type="hidden" id="srcVid_{{key}}" value="../storage/videos/{{file['video']}}">
+        {% endfor %}
+        <video id="video" width="720" src="../storage/videos/{{files[0]['video']}}"  preload controls></video>
+    </div>
+</div>
 
-<video id="video" width="720" src="../storage/videos/{{files[0]['video']}}"  preload="auto" controls dden></video>
+<div class="row justify-content-center">
 
-<button onclick="test()">test</button>
-<input type="hidden" id="videosCount" value="{{files|length}}">
-<input type="hidden" id="actualVideoId" value="0">
-<br>
-<button onclick="changeFile('prev', false)">Precedent</button>
-<button id="btn" onclick="startPlay()">play</button>
-<button onclick="changeFile('next', false)">Suivant</button>
+    <div class="col-md-6">
+        <div class="row justify-content-center">
+            <div class="col-md-2">
+                <button class="btn btn-block btn-primary text-center" onclick="changeFile('prev', false)"> << </button>
+        
+            </div>
+        
+            <div class="col-md-6">
+                <button class="btn btn-block btn-primary" id="btn" onclick="startPlay()">Play</button>
+        
+            </div>
+        
+            <div class="col-md-2">
+                <button class="btn btn-block btn-primary text-center" onclick="changeFile('next', false)"> >> </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     let intervalVid = null;
@@ -66,9 +85,9 @@
         idVid = $("#idVid_"+actualVid).val();
 
         $("h3").attr("hidden", true);
-        $("#title_"+actualVid).attr("hidden", false);
+        $("#title_"+idVid).attr("hidden", false);
         srcVid = $("#srcVid_"+actualVid).val();
-        console.log(srcVid);
+
         document.getElementById("video").src = srcVid;
 
         if (autoplay == true) {

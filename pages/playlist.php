@@ -21,4 +21,4 @@ echo $twig->render("head.html");
 
 echo $twig->render("playlist.html", ["files" => $arrayFiles]);
 
-#echo $twig->render("foot.html");
+echo $twig->render("foot.html");
