@@ -1,5 +1,5 @@
 <?php
-include_once("../init/_init.php");
+require_once("../init/_init.php");
 
 $arrayFiles = array();
 $videoFiles = scandir("../storage/videos");
